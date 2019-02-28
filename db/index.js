@@ -1,9 +1,13 @@
-const mysql = require('mysql');
+const db = require('../connector')
 
-module.exports =
-    mysql.createConnection({
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_USER_PASSWORD,
-        database: process.env.DB
-    });
+const persons = () => {
+    return db.query('select * from person', (error, results) => {
+        if(error) 
+            return error;
+        return results[0].solution;
+    })
+}
+
+Object.defineProperty(exports, 'persons', {
+    get: () => persons
+})

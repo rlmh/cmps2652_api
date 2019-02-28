@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const http = require('http')
 const path = require('path')
-const db = require('./db')
+const { persons } = require('./db')
 
 let app = express()
     .use(express.static(
@@ -10,6 +10,10 @@ let app = express()
     ))
     .get('/', (request, response) => {
         response.send('test')
+    })
+    .get('/person', (request, response) => {
+        console.log(persons())
+        response.send(persons())
     })
 
 http.createServer(app)
