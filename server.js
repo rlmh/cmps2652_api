@@ -8,6 +8,7 @@ const app = express()
     .use(express.static(
         path.join(__dirname + '/static')
     ))
+    .use(express.urlencoded())
     .get('/', (request, response) => {
         response.send('test')
     })
@@ -15,6 +16,10 @@ const app = express()
         persons().then(data => {
             response.send(data)
         })
+    })
+    .post('/login', (request, response) => {
+        console.log(request.body)
+        response.send(request.body)
     })
 
 http.createServer(app)
