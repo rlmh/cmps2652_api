@@ -18,7 +18,8 @@ const app = express()
         })
     })
     .post('/login', (request, response) => {
-        console.log(request.body)
+        const { username, password } = request.body
+        console.log(username, password)
         response.send(request.body)
     })
 
