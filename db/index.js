@@ -5,3 +5,7 @@ const persons = require('./persons')(db)
 Object.defineProperty(exports, 'persons', {
     get: () => persons
 })
+
+Object.defineProperty(exports, 'users', {
+    get: () => users
+})

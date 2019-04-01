@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const http = require('http')
 const path = require('path')
-const { persons } = require('./db')
+const { persons, users } = require('./db')
 
 const app = express()
     .use(express.static(
@@ -19,8 +19,19 @@ const app = express()
     })
     .post('/login', (request, response) => {
         const { username, password } = request.body
-        console.log(username, password)
-        response.send(request.body)
+        users.authenticate(username, password).then(result => {
+            if(result)
+                response.send({
+                    ok: true,
+                    message: 'Authenticated successfully'
+                })
+        }).catch(error => {
+            console.log(error)
+            response.send({
+                ok: false,
+                message: 'Mismatch username/password'
+            })
+        })
     })
 
 http.createServer(app)
