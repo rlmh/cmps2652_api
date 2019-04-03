@@ -8,4 +8,6 @@ const connection =
         database: process.env.DB
     });
 
-module.exports = connection;
+connection.connect()
+
+module.exports = connection

@@ -1,10 +1,12 @@
 require('dotenv').config()
 const express = require('express')
+const cors = require('cors')
 const http = require('http')
 const path = require('path')
 const { persons, users } = require('./db')
 
 const app = express()
+    .use(cors())
     .use(express.static(
         path.join(__dirname + '/static')
     ))
@@ -20,11 +22,18 @@ const app = express()
     .post('/login', (request, response) => {
         const { username, password } = request.body
         users.authenticate(username, password).then(result => {
-            if(result)
+            console.log(':: ',result)
+            if(result.ok) {
                 response.send({
                     ok: true,
                     message: 'Authenticated successfully'
                 })
+            } else {
+                response.send({
+                    ok: false,
+                    message: 'Mismatch username/password'
+                })
+            }
         }).catch(error => {
             console.log(error)
             response.send({
