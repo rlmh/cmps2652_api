@@ -20,6 +20,41 @@ module.exports = (db) => {
                     }
                 })
             })
+        },
+        getMenu: (username) => {
+            // return a promise
+            return new Promise((resolve, reject) => {
+                // attempt to connect to database
+                db.query(`SELECT name FROM users
+                    JOIN roles on roles.id = roleId 
+                    WHERE username=?`, 
+                    [username], (error, results) => {
+                    // if there was an error executing query
+                    if (error)
+                        reject({ok: false, error})
+                    else {
+                        let menu = []
+
+                        if(results[0].name == 'admin') {
+                            menu = [{
+                                menu: 'User Accounts',
+                                url: '/users'
+                            }, {
+                                menu: 'Reports',
+                                url: '/reports'
+                            }, {
+                                menu: 'Test',
+                                url: '/test'
+                            }]
+                        }
+                        
+                        resolve({ok: true, data: {
+                            role: results[0].name,
+                            menu
+                        }})
+                    }
+                })
+            })
         }
     }
 }
